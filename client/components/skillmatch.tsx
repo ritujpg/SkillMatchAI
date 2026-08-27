@@ -1,5 +1,5 @@
 import { ChangeEvent, ReactNode, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { BriefcaseBusiness, Check, FileImage, LoaderCircle, Sparkles, Upload, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -7,8 +7,23 @@ export function Logo() {
   return <Link to="/" className="flex items-center gap-2 font-bold tracking-tight text-slate-950"><span className="grid h-9 w-9 place-items-center rounded-xl bg-blue-600 text-white shadow-sm"><Sparkles className="h-4 w-4" /></span><span>SkillMatch<span className="text-blue-600">AI</span></span></Link>;
 }
 
+export function scrollToSection(id: string) {
+  const section = document.getElementById(id);
+  if (!section) return;
+  const headerOffset = 80;
+  const top = section.getBoundingClientRect().top + window.scrollY - headerOffset;
+  window.scrollTo({ top, behavior: "smooth" });
+}
+
 export function Navbar() {
-  return <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/90 backdrop-blur"><div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6"><Logo /><nav className="hidden items-center gap-7 text-sm font-medium text-slate-600 md:flex"><Link to="/#how-it-works" className="hover:text-blue-600">How It Works</Link><Link to="/#features" className="hover:text-blue-600">Features</Link></nav></div></header>;
+  const location = useLocation();
+  const handleSectionClick = (id: string, event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (location.pathname === "/") {
+      event.preventDefault();
+      scrollToSection(id);
+    }
+  };
+  return <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/90 backdrop-blur"><div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6"><Logo /><nav className="hidden items-center gap-7 text-sm font-medium text-slate-600 md:flex"><Link to="/#how-it-works" onClick={(event) => handleSectionClick("how-it-works", event)} className="hover:text-blue-600">How It Works</Link><Link to="/#features" onClick={(event) => handleSectionClick("features", event)} className="hover:text-blue-600">Features</Link></nav></div></header>;
 }
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" | "ghost"; size?: "sm" | "md" | "lg" };
