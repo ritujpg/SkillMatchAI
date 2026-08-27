@@ -10,3 +10,18 @@
 export interface DemoResponse {
   message: string;
 }
+
+export interface AnalysisResult {
+  matchScore: number;
+  breakdown: Record<string, number>;
+  summary: string;
+  matchedSkills: string[];
+  missingSkills: string[];
+  strengths: string[];
+  recommendations: Array<{
+    title: string;
+    description: string;
+  }>;
+  jobTitle: string;
+  companyName?: string | null;
+}
