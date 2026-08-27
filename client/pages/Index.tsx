@@ -1,62 +1,7 @@
-import { DemoResponse } from "@shared/api";
-import { useEffect, useState } from "react";
+import { ArrowRight, BarChart3, BrainCircuit, CheckCircle2, FileSearch, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Button, FeatureCard, Navbar } from "@/components/skillmatch";
 
-export default function Index() {
-  const [exampleFromServer, setExampleFromServer] = useState("");
-  // Fetch users on component mount
-  useEffect(() => {
-    fetchDemo();
-  }, []);
-
-  // Example of how to fetch data from the server (if needed)
-  const fetchDemo = async () => {
-    try {
-      const response = await fetch("/api/demo");
-      const data = (await response.json()) as DemoResponse;
-      setExampleFromServer(data.message);
-    } catch (error) {
-      console.error("Error fetching hello:", error);
-    }
-  };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
-      <div className="text-center">
-        {/* TODO: FUSION_GENERATION_APP_PLACEHOLDER replace everything here with the actual app! */}
-        <h1 className="text-2xl font-semibold text-slate-800 flex items-center justify-center gap-3">
-          <svg
-            className="animate-spin h-8 w-8 text-slate-400"
-            viewBox="0 0 50 50"
-          >
-            <circle
-              className="opacity-30"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-            />
-            <circle
-              className="text-slate-600"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-              strokeDasharray="100"
-              strokeDashoffset="75"
-            />
-          </svg>
-          Generating your app...
-        </h1>
-        <p className="mt-4 text-slate-600 max-w-md">
-          Watch the chat on the left for updates that might need your attention
-          to finish generating
-        </p>
-        <p className="mt-4 hidden max-w-md">{exampleFromServer}</p>
-      </div>
-    </div>
-  );
-}
+const features = [{ icon: <BarChart3 className="h-5 w-5" />, title: "Match Score", description: "See your overall compatibility with the role." }, { icon: <FileSearch className="h-5 w-5" />, title: "Skill Gap Analysis", description: "Discover the skills you have and the skills you need." }, { icon: <BrainCircuit className="h-5 w-5" />, title: "AI Recommendations", description: "Get practical suggestions to improve your job fit." }];
+const steps = ["Upload Your Resume", "Add a Job", "Get Your Match Report"];
+export default function Index() { const navigate = useNavigate(); return <div className="min-h-screen bg-white"><Navbar /><main><section className="mx-auto max-w-6xl px-4 pb-20 pt-16 text-center sm:px-6 sm:pt-24"><div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-bold tracking-wide text-blue-700"><Sparkles className="h-3.5 w-3.5" /> AI RESUME MATCHING</div><h1 className="mx-auto max-w-3xl text-4xl font-extrabold tracking-[-0.045em] text-slate-950 sm:text-6xl">Know how well your skills <span className="text-blue-600">match the job.</span></h1><p className="mx-auto mt-6 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">Upload your resume, add a job description, and get an AI-powered match analysis in seconds.</p><div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row"><Button size="lg" onClick={() => navigate("/analyze")}>Analyze My Resume <ArrowRight className="h-4 w-4" /></Button><Button size="lg" variant="secondary" onClick={() => document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })}>See How It Works</Button></div><div className="mx-auto mt-14 grid max-w-4xl grid-cols-1 gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-left sm:grid-cols-3"><div className="flex items-center gap-3 rounded-xl bg-white p-4 shadow-sm"><FileSearch className="h-5 w-5 text-blue-600" /><span className="text-sm font-semibold">Upload your resume</span></div><div className="flex items-center gap-3 rounded-xl bg-white p-4 shadow-sm"><BrainCircuit className="h-5 w-5 text-blue-600" /><span className="text-sm font-semibold">Add a job description</span></div><div className="flex items-center gap-3 rounded-xl bg-white p-4 shadow-sm"><BarChart3 className="h-5 w-5 text-blue-600" /><span className="text-sm font-semibold">Get your job match</span></div></div></section><section id="features" className="border-y border-slate-100 bg-slate-50/70 py-20"><div className="mx-auto max-w-6xl px-4 sm:px-6"><p className="text-center text-xs font-bold tracking-[.16em] text-blue-600">WHAT YOU’LL LEARN</p><h2 className="mt-3 text-center text-3xl font-bold tracking-tight text-slate-950">A clearer path to your next role</h2><div className="mt-10 grid gap-5 md:grid-cols-3">{features.map((feature) => <FeatureCard key={feature.title} {...feature} />)}</div></div></section><section id="how-it-works" className="mx-auto max-w-6xl px-4 py-20 sm:px-6"><p className="text-center text-xs font-bold tracking-[.16em] text-blue-600">HOW IT WORKS</p><h2 className="mt-3 text-center text-3xl font-bold tracking-tight text-slate-950">Three steps to better job fit</h2><div className="mt-12 grid gap-8 md:grid-cols-3">{steps.map((step, i) => <div key={step} className="relative text-center"><div className="mx-auto grid h-11 w-11 place-items-center rounded-full bg-blue-600 text-sm font-bold text-white">0{i + 1}</div><h3 className="mt-4 font-bold text-slate-900">{step}</h3><p className="mx-auto mt-2 max-w-[210px] text-sm leading-6 text-slate-600">{i === 0 ? "Use a clear image of your latest resume." : i === 1 ? "Paste the role details or job posting URL." : "Review AI-guided insights in one clear report."}</p></div>)}</div><div className="mt-12 text-center"><Button size="lg" onClick={() => navigate("/analyze")}>Get started free <ArrowRight className="h-4 w-4" /></Button></div></section></main></div>; }
